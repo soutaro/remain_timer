@@ -12,7 +12,7 @@ class DurationFormat
 
   def self.build_parts(value)
     # @type var parts: { day: Integer, hour: Integer, min: Integer, sec: Float }
-    parts = {}
+    parts = { day: 0, hour: 0, min: 0, sec: 0.0 }
     # @type var remainder: Integer | Float
     remainder = value.to_f
 

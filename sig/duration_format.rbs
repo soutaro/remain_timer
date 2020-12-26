@@ -7,5 +7,6 @@ class DurationFormat
   PARTS_IN_SECONDS: {sec: Integer, min: Integer, hour: Integer, day: Integer}
 
   def self.build_parts: (Integer | Float value) -> {day: Integer, hour: Integer, min: Integer, sec: Float}
+
   def self.format: (Integer | Float value) -> String
 end

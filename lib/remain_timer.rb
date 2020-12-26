@@ -16,24 +16,26 @@ class RemainTimer
   end
 
   def progress(count, time = now)
-    @laptimes << LapTime.new(@laptimes.last.past_count + count, time)
+    last_time = @laptimes.last or raise
+    @laptimes << LapTime.new(last_time.past_count + count, time)
   end
 
   def remain_time
     laptimes = @estimate_laptime_size ? @laptimes.last(@estimate_laptime_size) : @laptimes
-    first_laptime = laptimes.first
-    last_laptime = laptimes.last
+    first_laptime = laptimes.first or raise
+    last_laptime = laptimes.last or raise
     past_count = last_laptime.past_count
-    past_duration = last_laptime.time - @laptimes.first.time
+    past_duration = last_laptime.time - @laptimes[0].time
     period_past_count = last_laptime.past_count - first_laptime.past_count
     period_past_duration = last_laptime.time - first_laptime.time
-    if all_count
-      remain_count = all_count - past_count
+    if all = all_count
+      remain_count = all - past_count
       if period_past_count > 0
         remain_duration = period_past_duration / period_past_count * remain_count
         all_duration = past_duration + remain_duration
       end
     end
+
     RemainTime.new(
       all_duration: all_duration,
       past_duration: past_duration,
@@ -50,9 +52,9 @@ class RemainTimer
     (@use_current ||= Time.respond_to?(:current)) ? Time.current : Time.now
   end
 
-  LapTime = Struct.new(:past_count, :time)
+  LapTime = __any__ = Struct.new(:past_count, :time)
 
-  RemainTime =
+  RemainTime = __any__ =
     Struct.new(
       :all_duration,
       :past_duration,
